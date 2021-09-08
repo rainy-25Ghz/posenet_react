@@ -1,8 +1,10 @@
-import { load } from "@tensorflow-models/posenet";
+import { load, Pose } from "@tensorflow-models/posenet";
 import React, { useEffect } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import imgsrc from "./images.jpg";
-
+import { draw, init } from "../Game/Game";
+let pose:Pose|undefined=undefined;
+export let updatePose:() => Promise<Pose>;
 export const Posenet = () => {
   useEffect(() => {
   // The width and height of the captured photo. We will set the
@@ -22,8 +24,11 @@ export const Posenet = () => {
 
   
 
-  function startup() {
+  async function startup() {
     console.log('start');
+
+    let net=await load();
+  
     let video = document.getElementById('video') as HTMLVideoElement ;
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
    
@@ -49,24 +54,29 @@ export const Posenet = () => {
         }
         video.width=width;
         video.height=height;
-        canvas.width=width;
-        canvas.height=height;
+        // canvas.width=width;
+        // canvas.height=height;
         streaming = true;
+        updatePose=async()=>{
+          pose=await net.estimateSinglePose(video,{flipHorizontal:true});
+          console.log(pose);
+          return pose;
+        };
+        init();
+        draw();
       }
     }, false);
+    
+
   }
   window.addEventListener('load', startup, false);
   }, []);
   return (
     <>
       <div className="camera">
-        <video id="video">Video stream not available.</video>
-        <button id="startbutton">Take photo</button>
+        <video id="video" style={{transform: 'scaleX(-1)'}}>Video stream not available.</video>
       </div>
-      <canvas id="canvas"></canvas>
-      <div className="output">
-        <img id="photo" alt="The screen capture will appear in this box." />
-      </div>
+      <canvas id="myCanvas" width="480" height="320"></canvas>
     </>
   );
 };
