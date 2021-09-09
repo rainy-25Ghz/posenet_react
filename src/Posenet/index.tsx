@@ -3,78 +3,72 @@ import React, { useEffect } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import imgsrc from "./images.jpg";
 import { draw, init } from "../Game/Game";
-let pose:Pose|undefined=undefined;
-export let updatePose:() => Promise<Pose>;
+import { animate, createCat, createRing, initZdog } from "../Game/Zdog";
+let pose: Pose | undefined = undefined;
+export let updatePose: () => Promise<Pose>;
 export const Posenet = () => {
   useEffect(() => {
-  // The width and height of the captured photo. We will set the
-  // width to the value defined here, but the height will be
-  // calculated based on the aspect ratio of the input stream.
+    //initZdog();
+    // createRing();
+    // createCat();
+    // animate()
+    // The width and height of the captured photo. We will set the
+    // width to the value defined here, but the height will be
+    // calculated based on the aspect ratio of the input stream.
 
-  const width = 320;    // We will scale the photo width to this
-  let height = 0;     // This will be computed based on the input stream
+    // |streaming| indicates whether or not we're currently streaming
+    // video from the camera. Obviously, we start at false.
 
-  // |streaming| indicates whether or not we're currently streaming
-  // video from the camera. Obviously, we start at false.
+    let streaming = false;
 
-  let streaming = false;
+    // The various HTML elements we need to configure or control. These
+    // will be set by the startup() function.
 
-  // The various HTML elements we need to configure or control. These
-  // will be set by the startup() function.
+    async function startup_posenet() {
+      console.log("start");
+      let net = await load();
 
-  
+      let video = document.getElementById("video") as HTMLVideoElement;
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then(function (stream) {
+          video.srcObject = stream;
+          video.play();
+        })
+        .catch(function (err) {
+          console.log("An error occurred: " + err);
+        });
 
-  async function startup() {
-    console.log('start');
-
-    let net=await load();
-  
-    let video = document.getElementById('video') as HTMLVideoElement ;
-    let canvas = document.getElementById('canvas') as HTMLCanvasElement;
-   
-    navigator.mediaDevices.getUserMedia({video: true, audio: false})
-    .then(function(stream) {
-      video.srcObject = stream;
-      video.play();
-    })
-    .catch(function(err) {
-      console.log("An error occurred: " + err);
-    });
-
-    video.addEventListener('canplay', function(ev){
-      if (!streaming) {
-        console.log('canplay');
-        height = video.videoHeight / (video.videoWidth/width);
-      
-        // Firefox currently has a bug where the height can't be read from
-        // the video, so we will make assumptions if this happens.
-      
-        if (isNaN(height)) {
-          height = width / (4/3);
-        }
-        video.width=width;
-        video.height=height;
-        // canvas.width=width;
-        // canvas.height=height;
-        streaming = true;
-        updatePose=async()=>{
-          pose=await net.estimateSinglePose(video,{flipHorizontal:true});
-          console.log(pose);
-          return pose;
-        };
-        init();
-        draw();
-      }
-    }, false);
-    
-
-  }
-  window.addEventListener('load', startup, false);
+      video.addEventListener(
+        "canplay",
+        function (ev) {
+          if (!streaming) {
+            console.log("canplay");
+            // canvas.width=width;
+            // canvas.height=height;
+            streaming = true;
+            updatePose = async () => {
+              pose = await net.estimateSinglePose(video, {
+                flipHorizontal: true,
+              });
+              console.log(pose);
+              return pose;
+            };
+            init();
+            draw();
+          }
+        },
+        false
+      );
+    }
+    window.addEventListener("load", startup_posenet, false);
   }, []);
   return (
     <>
       <div className="camera">
-        <video id="video" style={{transform: 'scaleX(-1)'}}>Video stream not available.</video>
+        <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
+          Video stream not available.
+        </video>
       </div>
       <canvas id="myCanvas" width="480" height="320"></canvas>
     </>

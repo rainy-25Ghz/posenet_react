@@ -1976,6 +1976,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@types/zdog@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.nlark.com/@types/zdog/download/@types/zdog-1.1.2.tgz#f18cb79e4ad5ce69f5c332615e54e87ebb670ebe"
+  integrity sha1-8Yy3nkrVzmn1wzJhXlTofrtnDr4=
+
 "@typescript-eslint/eslint-plugin@^4.5.0":
   version "4.15.2"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.15.2.tgz#981b26b4076c62a5a55873fbef3fe98f83360c61"
@@ -11590,3 +11595,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zdog@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.nlark.com/zdog/download/zdog-1.1.2.tgz#e2193d9d2cfef30f516d4ba8f02d53b0b846fa53"
+  integrity sha1-4hk9nSz+8w9RbUuo8C1TsLhG+lM=

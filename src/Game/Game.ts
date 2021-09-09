@@ -1,29 +1,28 @@
 import { Pose } from "@tensorflow-models/posenet";
 import { updatePose } from "../Posenet";
 
-let canvas:HTMLCanvasElement;
+let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
-let ballRadius:number;
-let x:number;
-let y:number;
-let dx:number;
-let dy:number;
-let paddleHeight:number;
-let paddleWidth:number;
-let paddleX:number;
-let rightPressed:boolean;
-let leftPressed:boolean;
-let brickRowCount:number;
-let brickColumnCount:number;
-let brickWidth:number;
-let brickHeight:number
-let brickPadding:number;
-let brickOffsetLeft:number;
-let brickOffsetTop:number;
-let score:number; 
-let lives:number; 
-let bricks:any[];
- 
+let ballRadius: number;
+let x: number;
+let y: number;
+let dx: number;
+let dy: number;
+let paddleHeight: number;
+let paddleWidth: number;
+let paddleX: number;
+let rightPressed: boolean;
+let leftPressed: boolean;
+let brickRowCount: number;
+let brickColumnCount: number;
+let brickWidth: number;
+let brickHeight: number;
+let brickPadding: number;
+let brickOffsetLeft: number;
+let brickOffsetTop: number;
+let score: number;
+let lives: number;
+let bricks: any[];
 
 export const init = () => {
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
@@ -58,26 +57,9 @@ export const init = () => {
   document.addEventListener("keyup", keyUpHandler, false);
   document.addEventListener("mousemove", mouseMoveHandler, false);
 
-  function keyDownHandler(e: KeyboardEvent) {
-    // if (e.code == "ArrowRight") {
-    //   rightPressed = true;
-    // } else if (e.code == "ArrowLeft") {
-    //   leftPressed = true;
-    // }
-  }
-  function keyUpHandler(e: KeyboardEvent) {
-    // if (e.code == "ArrowRight") {
-    //   rightPressed = false;
-    // } else if (e.code == "ArrowLeft") {
-    //   leftPressed = false;
-    // }
-  }
-  function mouseMoveHandler(e: MouseEvent) {
-    // var relativeX = e.clientX - canvas.offsetLeft;
-    // if (relativeX > 0 && relativeX < canvas.width) {
-    //   paddleX = relativeX - paddleWidth / 2;
-    // }
-  }
+  function keyDownHandler(e: KeyboardEvent) {}
+  function keyUpHandler(e: KeyboardEvent) {}
+  function mouseMoveHandler(e: MouseEvent) {}
 };
 function collisionDetection() {
   for (var c = 0; c < brickColumnCount; c++) {
@@ -185,8 +167,9 @@ export function draw() {
 
   x += dx;
   y += dy;
-  updatePose().then(pose=>{
-      paddleX=pose.keypoints[0].position.x*1.3;
+  updatePose().then((pose) => {
+    if (pose.keypoints[0].score > 0.6)
+      paddleX = pose.keypoints[0].position.x *2;
   });
   requestAnimationFrame(draw);
 }
