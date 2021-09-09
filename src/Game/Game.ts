@@ -23,11 +23,15 @@ let brickOffsetTop: number;
 let score: number;
 let lives: number;
 let bricks: any[];
-let paused:boolean;
-let video:HTMLVideoElement;
+let video: HTMLVideoElement;
+let id:number;
+export const pause = () => {
+  console.log(id);
+  cancelAnimationFrame(id);
+};
 export const init = () => {
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
-  video=document.getElementById('video') as HTMLVideoElement;
+  video = document.getElementById("video") as HTMLVideoElement;
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ballRadius = 10;
   x = canvas.width / 2;
@@ -128,11 +132,11 @@ function drawLives() {
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
-let backImage=new Image();
-backImage.src=background;
+let backImage = new Image();
+backImage.src = background;
 export function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(backImage,0,0);
+  ctx.drawImage(backImage, 0, 0);
   drawBricks();
   drawBall();
   drawPaddle();
@@ -173,7 +177,8 @@ export function draw() {
   y += dy;
   updatePose().then((pose) => {
     if (pose.keypoints[0].score > 0.6)
-      paddleX = pose.keypoints[0].position.x /video.width*canvas.width*1.1;
+      paddleX =
+        (pose.keypoints[0].position.x / video.width) * canvas.width * 1.1;
   });
-  requestAnimationFrame(draw);
+ id = requestAnimationFrame(draw);
 }

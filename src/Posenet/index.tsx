@@ -2,7 +2,7 @@ import { load, Pose } from "@tensorflow-models/posenet";
 import React, { useEffect } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import imgsrc from "./images.jpg";
-import { draw, init } from "../Game/Game";
+import { draw, init, pause } from "../Game/Game";
 
 let pose: Pose | undefined = undefined;
 export let updatePose: () => Promise<Pose>;
@@ -25,9 +25,9 @@ export const Posenet = () => {
       let net = await load();
 
       let video = document.getElementById("video") as HTMLVideoElement;
-      
+      video.setAttribute("playsinline", 'true');
       navigator.mediaDevices
-        .getUserMedia({ video: true, audio: false })
+        .getUserMedia({ video: {facingMode:'user'}, audio: false })
         .then(function (stream) {
           video.srcObject = stream;
           video.play();
@@ -51,6 +51,7 @@ export const Posenet = () => {
               return pose;
             };
             init();
+            console.log('start draw!');
             draw();
           }
         },
@@ -60,13 +61,13 @@ export const Posenet = () => {
     window.addEventListener("load", startup_posenet, false);
   }, []);
   return (
-    <>
+    <div className="game" >
       <div className="camera">
         <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
           Video stream not available.
         </video>
       </div>
       <canvas id="myCanvas" width="480" height="320"></canvas>
-    </>
+    </div>
   );
 };
