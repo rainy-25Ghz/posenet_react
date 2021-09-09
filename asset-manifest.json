@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/posenet_react/static/css/main.ede39bfa.chunk.css",
+    "main.js": "/posenet_react/static/js/main.9b76445b.chunk.js",
+    "main.js.map": "/posenet_react/static/js/main.9b76445b.chunk.js.map",
+    "runtime-main.js": "/posenet_react/static/js/runtime-main.4fb7f25d.js",
+    "runtime-main.js.map": "/posenet_react/static/js/runtime-main.4fb7f25d.js.map",
+    "static/js/2.b38647e6.chunk.js": "/posenet_react/static/js/2.b38647e6.chunk.js",
+    "static/js/2.b38647e6.chunk.js.map": "/posenet_react/static/js/2.b38647e6.chunk.js.map",
+    "static/js/3.b9bb0f2b.chunk.js": "/posenet_react/static/js/3.b9bb0f2b.chunk.js",
+    "static/js/3.b9bb0f2b.chunk.js.map": "/posenet_react/static/js/3.b9bb0f2b.chunk.js.map",
+    "index.html": "/posenet_react/index.html",
+    "static/css/main.ede39bfa.chunk.css.map": "/posenet_react/static/css/main.ede39bfa.chunk.css.map",
+    "static/js/2.b38647e6.chunk.js.LICENSE.txt": "/posenet_react/static/js/2.b38647e6.chunk.js.LICENSE.txt",
+    "static/media/background.ce91d2ae.jpg": "/posenet_react/static/media/background.ce91d2ae.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4fb7f25d.js",
+    "static/js/2.b38647e6.chunk.js",
+    "static/css/main.ede39bfa.chunk.css",
+    "static/js/main.9b76445b.chunk.js"
+  ]
+}
