@@ -1,6 +1,6 @@
 import { Pose } from "@tensorflow-models/posenet";
 import { updatePose } from "../Posenet";
-
+import background from "./background.jpg";
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let ballRadius: number;
@@ -37,7 +37,7 @@ export const init = () => {
   paddleX = (canvas.width - paddleWidth) / 2;
   rightPressed = false;
   leftPressed = false;
-  brickRowCount = 5;
+  brickRowCount = 7;
   brickColumnCount = 3;
   brickWidth = 75;
   brickHeight = 20;
@@ -126,9 +126,11 @@ function drawLives() {
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
-
+let backImage=new Image();
+backImage.src=background;
 export function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backImage,0,0);
   drawBricks();
   drawBall();
   drawPaddle();
