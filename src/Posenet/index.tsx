@@ -3,15 +3,11 @@ import React, { useEffect } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import imgsrc from "./images.jpg";
 import { draw, init } from "../Game/Game";
-import { animate, createCat, createRing, initZdog } from "../Game/Zdog";
+
 let pose: Pose | undefined = undefined;
 export let updatePose: () => Promise<Pose>;
 export const Posenet = () => {
   useEffect(() => {
-    //initZdog();
-    // createRing();
-    // createCat();
-    // animate()
     // The width and height of the captured photo. We will set the
     // width to the value defined here, but the height will be
     // calculated based on the aspect ratio of the input stream.
@@ -29,6 +25,7 @@ export const Posenet = () => {
       let net = await load();
 
       let video = document.getElementById("video") as HTMLVideoElement;
+      
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: false })
         .then(function (stream) {
@@ -37,6 +34,7 @@ export const Posenet = () => {
         })
         .catch(function (err) {
           console.log("An error occurred: " + err);
+          alert('not supported');
         });
 
       video.addEventListener(
@@ -44,8 +42,6 @@ export const Posenet = () => {
         function (ev) {
           if (!streaming) {
             console.log("canplay");
-            // canvas.width=width;
-            // canvas.height=height;
             streaming = true;
             updatePose = async () => {
               pose = await net.estimateSinglePose(video, {

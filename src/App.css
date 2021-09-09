@@ -49,4 +49,7 @@ canvas{
     justify-content: center;
     align-items: center;
   }
+  canvas {
+    width:100vw;
+  }
 }

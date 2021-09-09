@@ -23,9 +23,11 @@ let brickOffsetTop: number;
 let score: number;
 let lives: number;
 let bricks: any[];
-
+let paused:boolean;
+let video:HTMLVideoElement;
 export const init = () => {
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+  video=document.getElementById('video') as HTMLVideoElement;
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ballRadius = 10;
   x = canvas.width / 2;
@@ -37,7 +39,7 @@ export const init = () => {
   paddleX = (canvas.width - paddleWidth) / 2;
   rightPressed = false;
   leftPressed = false;
-  brickRowCount = 7;
+  brickRowCount = 5;
   brickColumnCount = 3;
   brickWidth = 75;
   brickHeight = 20;
@@ -171,7 +173,7 @@ export function draw() {
   y += dy;
   updatePose().then((pose) => {
     if (pose.keypoints[0].score > 0.6)
-      paddleX = pose.keypoints[0].position.x *2;
+      paddleX = pose.keypoints[0].position.x /video.width*canvas.width*1.1;
   });
   requestAnimationFrame(draw);
 }
