@@ -6,14 +6,17 @@
   align-items: center;
 }
 .game{
+  width:100%;
   display: flex;
   flex-direction: row;
   flex-basis: 100%;
 
 }
+.game canvas{
+  flex-grow: 1;
+}
 .camera{
-  box-sizing: border-box;
-  margin-right: 25%;
+  flex-grow: 1;
 }
 .App-logo {
   height: 40vmin;

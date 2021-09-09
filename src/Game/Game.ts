@@ -24,14 +24,29 @@ let score: number;
 let lives: number;
 let bricks: any[];
 let video: HTMLVideoElement;
-let id:number;
+let id: number;
+let interval = 33;
+let modal: (succeed: boolean) => void;
+export let hitAudio:HTMLAudioElement | null;
+export let backgroundAudio: HTMLAudioElement | null;
 export const pause = () => {
+  if (backgroundAudio) {
+    backgroundAudio.pause();
+  }
   console.log(id);
   cancelAnimationFrame(id);
 };
-export const init = () => {
+
+export const init = (callback: (succeed: boolean) => void) => {
+  modal = callback;
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
   video = document.getElementById("video") as HTMLVideoElement;
+  if (!backgroundAudio) {
+    backgroundAudio = new Audio("/BGM.mp3");
+  }
+  if(!hitAudio){
+    hitAudio=new Audio("/hit.wav");
+  }
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ballRadius = 10;
   x = canvas.width / 2;
@@ -59,13 +74,6 @@ export const init = () => {
       bricks[c][r] = { x: 0, y: 0, status: 1 };
     }
   }
-  document.addEventListener("keydown", keyDownHandler, false);
-  document.addEventListener("keyup", keyUpHandler, false);
-  document.addEventListener("mousemove", mouseMoveHandler, false);
-
-  function keyDownHandler(e: KeyboardEvent) {}
-  function keyUpHandler(e: KeyboardEvent) {}
-  function mouseMoveHandler(e: MouseEvent) {}
 };
 function collisionDetection() {
   for (var c = 0; c < brickColumnCount; c++) {
@@ -80,10 +88,12 @@ function collisionDetection() {
         ) {
           dy = -dy;
           b.status = 0;
+          hitAudio?.play();
           score++;
           if (score == brickRowCount * brickColumnCount) {
-            alert("YOU WIN, CONGRATS!");
-            document.location.reload();
+            modal(true);
+            // alert("YOU WIN, CONGRATS!");
+            // document.location.reload();
           }
         }
       }
@@ -134,6 +144,15 @@ function drawLives() {
 }
 let backImage = new Image();
 backImage.src = background;
+export function drawInit() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(backImage, 0, 0);
+  drawBricks();
+  drawBall();
+  drawPaddle();
+  drawScore();
+  drawLives();
+}
 export function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backImage, 0, 0);
@@ -155,8 +174,9 @@ export function draw() {
     } else {
       lives--;
       if (!lives) {
-        alert("GAME OVER");
-        document.location.reload();
+        // alert("GAME OVER");
+        // document.location.reload();
+        modal(false);
       } else {
         x = canvas.width / 2;
         y = canvas.height - 30;
@@ -180,5 +200,5 @@ export function draw() {
       paddleX =
         (pose.keypoints[0].position.x / video.width) * canvas.width * 1.1;
   });
- id = requestAnimationFrame(draw);
+  id = requestAnimationFrame(draw);
 }
