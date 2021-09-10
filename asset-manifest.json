@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/posenet_react/static/css/main.4c344951.chunk.css",
-    "main.js": "/posenet_react/static/js/main.4a977c26.chunk.js",
-    "main.js.map": "/posenet_react/static/js/main.4a977c26.chunk.js.map",
-    "runtime-main.js": "/posenet_react/static/js/runtime-main.00a67b64.js",
-    "runtime-main.js.map": "/posenet_react/static/js/runtime-main.00a67b64.js.map",
+    "main.css": "/posenet_react/static/css/main.9a080b01.chunk.css",
+    "main.js": "/posenet_react/static/js/main.e1507c06.chunk.js",
+    "main.js.map": "/posenet_react/static/js/main.e1507c06.chunk.js.map",
+    "runtime-main.js": "/posenet_react/static/js/runtime-main.e7db89c2.js",
+    "runtime-main.js.map": "/posenet_react/static/js/runtime-main.e7db89c2.js.map",
     "static/css/2.a95be28f.chunk.css": "/posenet_react/static/css/2.a95be28f.chunk.css",
-    "static/js/2.7dffcc69.chunk.js": "/posenet_react/static/js/2.7dffcc69.chunk.js",
-    "static/js/2.7dffcc69.chunk.js.map": "/posenet_react/static/js/2.7dffcc69.chunk.js.map",
-    "static/js/3.463dc07f.chunk.js": "/posenet_react/static/js/3.463dc07f.chunk.js",
-    "static/js/3.463dc07f.chunk.js.map": "/posenet_react/static/js/3.463dc07f.chunk.js.map",
+    "static/js/2.326b3d09.chunk.js": "/posenet_react/static/js/2.326b3d09.chunk.js",
+    "static/js/2.326b3d09.chunk.js.map": "/posenet_react/static/js/2.326b3d09.chunk.js.map",
+    "static/js/3.3879bbba.chunk.js": "/posenet_react/static/js/3.3879bbba.chunk.js",
+    "static/js/3.3879bbba.chunk.js.map": "/posenet_react/static/js/3.3879bbba.chunk.js.map",
     "index.html": "/posenet_react/index.html",
     "static/css/2.a95be28f.chunk.css.map": "/posenet_react/static/css/2.a95be28f.chunk.css.map",
-    "static/css/main.4c344951.chunk.css.map": "/posenet_react/static/css/main.4c344951.chunk.css.map",
-    "static/js/2.7dffcc69.chunk.js.LICENSE.txt": "/posenet_react/static/js/2.7dffcc69.chunk.js.LICENSE.txt"
+    "static/css/main.9a080b01.chunk.css.map": "/posenet_react/static/css/main.9a080b01.chunk.css.map",
+    "static/js/2.326b3d09.chunk.js.LICENSE.txt": "/posenet_react/static/js/2.326b3d09.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.00a67b64.js",
+    "static/js/runtime-main.e7db89c2.js",
     "static/css/2.a95be28f.chunk.css",
-    "static/js/2.7dffcc69.chunk.js",
-    "static/css/main.4c344951.chunk.css",
-    "static/js/main.4a977c26.chunk.js"
+    "static/js/2.326b3d09.chunk.js",
+    "static/css/main.9a080b01.chunk.css",
+    "static/js/main.e1507c06.chunk.js"
   ]
 }
