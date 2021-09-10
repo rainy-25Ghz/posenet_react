@@ -65,7 +65,7 @@ export const init = (callback: (succeed: boolean) => void) => {
   brickOffsetTop = 30;
   brickOffsetLeft = 30;
   score = 0;
-  lives = 1;
+  lives = 3;
   bricks = [];
   for (var c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
