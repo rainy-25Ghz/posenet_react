@@ -1,14 +1,14 @@
 import { load, Pose } from "@tensorflow-models/posenet";
 import React, { useEffect, useState } from "react";
 import "@tensorflow/tfjs-backend-webgl";
-import { draw, drawInit, init, pause } from "../Game/Game";
+import { backgroundAudio, draw, drawInit, init, pause } from "../Game/Game";
 import { Button, Modal } from "antd";
-interface Props{
-  setPaused:(arg:boolean)=>void;
+interface Props {
+  setPaused: (arg: boolean) => void;
 }
 let pose: Pose | undefined = undefined;
 export let updatePose: () => Promise<Pose>;
-export const Posenet = ({setPaused}:Props) => {
+export const Posenet = ({ setPaused }: Props) => {
   const [isSucceedModalVisible, setIsSucceedModalVisible] = useState(false);
   const [isFailModalVisible, setFailModalVisible] = useState(false);
   const show = (succeed: boolean) => {
@@ -28,7 +28,7 @@ export const Posenet = ({setPaused}:Props) => {
     setFailModalVisible(false);
   };
   useEffect(() => {
-    
+
     // The width and height of the captured photo. We will set the
     // width to the value defined here, but the height will be
     // calculated based on the aspect ratio of the input stream.
@@ -83,14 +83,42 @@ export const Posenet = ({setPaused}:Props) => {
     window.addEventListener("load", startup_posenet, false);
   }, []);
 
+  const [paused, setpaused] = useState(true);
+
   return (
-    <div className="game">
-      <div className="camera">
-        <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
-          Video stream not available.
-        </video>
+    <div className="main-screen">
+      <div className="left"></div>
+      <div className="header">
+        <img src={process.env.PUBLIC_URL + '/Assets/title.png'} width="430px" height="auto" alt="PoseNet 打砖块" />
       </div>
       <canvas id="myCanvas" width="480" height="320"></canvas>
+      <div className="controls">
+        <div className="camera">
+          <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
+            视频流不可用。
+          </video>
+        </div>
+        <div className="control-buttons">
+          <Button
+            onClick={() => {
+              if (!paused) {
+                pause();
+              } else {
+                if (backgroundAudio) {
+                  console.log(backgroundAudio)
+                  backgroundAudio.autoplay = true;
+                  backgroundAudio.play();
+                }
+                requestAnimationFrame(draw);
+              }
+              setpaused(!paused);
+            }}
+          >
+            {paused ? `开始` : `暂停`}
+          </Button>
+        </div>
+      </div>
+      <div className="right"></div>
       <Modal
         className="succeed"
         visible={isSucceedModalVisible}
@@ -113,7 +141,6 @@ export const Posenet = ({setPaused}:Props) => {
       >
         失败
       </Modal>
-      
     </div>
   );
 };

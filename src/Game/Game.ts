@@ -1,6 +1,5 @@
 import { Pose } from "@tensorflow-models/posenet";
 import { updatePose } from "../Posenet";
-import background from "./background.jpg";
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let ballRadius: number;
@@ -27,7 +26,7 @@ let video: HTMLVideoElement;
 let id: number;
 let interval = 33;
 let modal: (succeed: boolean) => void;
-export let hitAudio:HTMLAudioElement | null;
+export let hitAudio: HTMLAudioElement | null;
 export let backgroundAudio: HTMLAudioElement | null;
 export const pause = () => {
   if (backgroundAudio) {
@@ -42,10 +41,10 @@ export const init = (callback: (succeed: boolean) => void) => {
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
   video = document.getElementById("video") as HTMLVideoElement;
   if (!backgroundAudio) {
-    backgroundAudio = new Audio("/BGM.mp3");
+    backgroundAudio = new Audio(process.env.PUBLIC_URL + '/Assets/BGM.mp3');
   }
-  if(!hitAudio){
-    hitAudio=new Audio("/hit.wav");
+  if (!hitAudio) {
+    hitAudio = new Audio(process.env.PUBLIC_URL + '/Assets/hit.wav');
   }
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ballRadius = 10;
@@ -123,11 +122,21 @@ function drawBricks() {
         var brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
         bricks[c][r].x = brickX;
         bricks[c][r].y = brickY;
-        ctx.beginPath();
+        /*ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
+        var img = new Image();
+        img.src = process.env.PUBLIC_URL + '/Assets/brick1.png';
+        img.onload = function () {
+          var ptrn = ctx.createPattern(img, 'repeat') as CanvasPattern;
+        }
+        ctx.closePath();*/
+        const imageFromPath = function (src: string) {
+          let img = new Image();
+          img.src = src;
+          return img;
+        }
+        
+        ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/brick1.png'), brickX, brickY, brickWidth, brickHeight);
       }
     }
   }
@@ -143,7 +152,7 @@ function drawLives() {
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
 let backImage = new Image();
-backImage.src = background;
+backImage.src = process.env.PUBLIC_URL + '/Assets/background.jpg';
 export function drawInit() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backImage, 0, 0);
@@ -173,7 +182,8 @@ export function draw() {
       dy = -dy;
     } else {
       lives--;
-      if (!lives) {
+      if (lives === 0) {
+        lives = 0;
         // alert("GAME OVER");
         // document.location.reload();
         modal(false);
