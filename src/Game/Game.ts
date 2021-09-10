@@ -65,7 +65,7 @@ export const init = (callback: (succeed: boolean) => void) => {
   brickOffsetTop = 30;
   brickOffsetLeft = 30;
   score = 0;
-  lives = 3;
+  lives = 1;
   bricks = [];
   for (var c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
@@ -190,6 +190,7 @@ export function draw() {
         lives = 0;
         // alert("GAME OVER");
         // document.location.reload();
+        
         modal(false);
       } else {
         x = canvas.width / 2;

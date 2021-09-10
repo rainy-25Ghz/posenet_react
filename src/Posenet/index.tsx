@@ -1,15 +1,13 @@
 import { load, Pose } from "@tensorflow-models/posenet";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import { backgroundAudio, draw, drawInit, init, pause } from "../Game/Game";
-import { Button, Modal } from "antd";
-import okbtn from "/Assets/OKbutton.png";
-interface Props {
-  setPaused: (arg: boolean) => void;
-}
+import { Modal } from "antd";
+
 let pose: Pose | undefined = undefined;
 export let updatePose: () => Promise<Pose>;
-export const Posenet = ({ setPaused }: Props) => {
+export const Posenet = () => {
+  const [paused, setpaused] = useState(true);
   const [isSucceedModalVisible, setIsSucceedModalVisible] = useState(false);
   const [isFailModalVisible, setFailModalVisible] = useState(false);
   const show = (succeed: boolean) => {
@@ -24,7 +22,7 @@ export const Posenet = ({ setPaused }: Props) => {
   const handleOk = () => {
     init(show);
     pause();
-    setPaused(true);
+    setpaused(true);
     setIsSucceedModalVisible(false);
     setFailModalVisible(false);
   };
@@ -83,7 +81,7 @@ export const Posenet = ({ setPaused }: Props) => {
     window.addEventListener("load", startup_posenet, false);
   }, []);
 
-  const [paused, setpaused] = useState(true);
+ 
 
   return (
     <div className="main-screen">
@@ -146,7 +144,7 @@ export const Posenet = ({ setPaused }: Props) => {
           setFailModalVisible(false);
         }}
         onOk={handleOk}
-        footer={<Button onClick={handleOk}>OK</Button>}
+        footer={<button onClick={handleOk}>OK</button>}
       >
         失败
       </Modal>
