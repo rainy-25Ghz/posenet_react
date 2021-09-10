@@ -74,6 +74,12 @@ export const init = (callback: (succeed: boolean) => void) => {
     }
   }
 };
+const imageFromPath = function (src: string) {
+  let img = new Image();
+  img.src = src;
+  return img;
+} 
+
 function collisionDetection() {
   for (var c = 0; c < brickColumnCount; c++) {
     for (var r = 0; r < brickRowCount; r++) {
@@ -102,16 +108,20 @@ function collisionDetection() {
 
 function drawBall() {
   ctx.beginPath();
-  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = "#0095DD";
-  ctx.fill();
+  // ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+  // ctx.fillStyle = "#0095DD";
+  // ctx.fill();
+  ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/ball.png'), x-ballRadius, y-ballRadius);
   ctx.closePath();
+  
 }
 function drawPaddle() {
   ctx.beginPath();
-  ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  /*ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  console.log(paddleWidth + ' ' + paddleHeight)
   ctx.fillStyle = "#0095DD";
-  ctx.fill();
+  ctx.fill();*/
+  ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/paddle.png'), paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
   ctx.closePath();
 }
 function drawBricks() {
@@ -130,12 +140,6 @@ function drawBricks() {
           var ptrn = ctx.createPattern(img, 'repeat') as CanvasPattern;
         }
         ctx.closePath();*/
-        const imageFromPath = function (src: string) {
-          let img = new Image();
-          img.src = src;
-          return img;
-        }
-        
         ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/brick1.png'), brickX, brickY, brickWidth, brickHeight);
       }
     }

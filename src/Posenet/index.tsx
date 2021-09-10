@@ -21,6 +21,7 @@ export const Posenet = ({ setPaused }: Props) => {
   };
 
   const handleOk = () => {
+
     init(show);
     pause();
     setPaused(true);
@@ -93,12 +94,7 @@ export const Posenet = ({ setPaused }: Props) => {
       </div>
       <canvas id="myCanvas" width="480" height="320"></canvas>
       <div className="controls">
-        <div className="camera">
-          <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
-            视频流不可用。
-          </video>
-        </div>
-        <div className="control-buttons">
+      <div className="control-buttons">
           <Button
             onClick={() => {
               if (!paused) {
@@ -116,6 +112,11 @@ export const Posenet = ({ setPaused }: Props) => {
           >
             {paused ? `开始` : `暂停`}
           </Button>
+        </div>
+        <div className="camera">
+          <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
+            视频流不可用。
+          </video>
         </div>
       </div>
       <div className="right"></div>
