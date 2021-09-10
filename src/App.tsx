@@ -1,13 +1,32 @@
-import React from 'react';
-import './App.css';
-import { Posenet } from './Posenet';
-
+import { Button } from "antd";
+import React, { useState } from "react";
+import "./App.css";
+import { backgroundAudio, draw, pause } from "./Game/Game";
+import { Posenet } from "./Posenet";
+import "antd/dist/antd.css";
 function App() {
+  const [paused, setpaused] = useState(true);
   return (
     <div className="App">
-     <Posenet></Posenet>
-     {/* <canvas className="zdog-canvas1" width="320" height="320" style={{backgroundColor:`#fff4e8`}}></canvas>
-     <canvas className="zdog-canvas2" width="320" height="320" style={{backgroundColor:`#fff4e8`}}></canvas> */}
+      <Posenet setPaused={setpaused}></Posenet>
+      <Button
+        onClick={() => {
+          if (!paused) {
+            pause();
+          } else {
+            if(backgroundAudio){
+              console.log(backgroundAudio)
+              backgroundAudio.autoplay=true;
+              backgroundAudio.play();
+            }
+            requestAnimationFrame(draw);
+          }
+          setpaused(!paused);
+        }}
+      >
+        {paused ? `开始` : `暂停`}
+      </Button>
+    
     </div>
   );
 }
