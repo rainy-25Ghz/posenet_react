@@ -7,7 +7,6 @@
 <!-- PROJECT SHIELDS -->
 
 [![Contributors][contributors-shield]][contributors-url]
-[![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -102,7 +101,7 @@ Team 200OK from Front-end Trainee Program 2021 (ZJU)
 
 ### 版权说明
 
-该项目签署了 MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/rainy-25Ghz/posenet_react/blob/master/LICENSE.txt)
+素材来源于网络，版权归创作者所有。
 
 ### 鸣谢
 
@@ -119,5 +118,3 @@ Team 200OK from Front-end Trainee Program 2021 (ZJU)
 [your-project-path]: rainy-25Ghz/posenet_react
 [contributors-shield]: https://img.shields.io/github/contributors/shaojintian/Best_README_template.svg?style=flat-square
 [contributors-url]: https://github.com/rainy-25Ghz/posenet_react/graphs/contributors
-[license-shield]: https://img.shields.io/github/license/shaojintian/Best_README_template.svg?style=flat-square
-[license-url]: https://github.com/rainy-25Ghz/posenet_react/blob/master/LICENSE.txt

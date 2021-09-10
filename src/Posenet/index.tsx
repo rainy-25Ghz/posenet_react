@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "@tensorflow/tfjs-backend-webgl";
 import { backgroundAudio, draw, drawInit, init, pause } from "../Game/Game";
 import { Button, Modal } from "antd";
+import okbtn from "/Assets/OKbutton.png";
 interface Props {
   setPaused: (arg: boolean) => void;
 }
@@ -21,7 +22,6 @@ export const Posenet = ({ setPaused }: Props) => {
   };
 
   const handleOk = () => {
-
     init(show);
     pause();
     setPaused(true);
@@ -29,7 +29,6 @@ export const Posenet = ({ setPaused }: Props) => {
     setFailModalVisible(false);
   };
   useEffect(() => {
-
     // The width and height of the captured photo. We will set the
     // width to the value defined here, but the height will be
     // calculated based on the aspect ratio of the input stream.
@@ -90,18 +89,27 @@ export const Posenet = ({ setPaused }: Props) => {
     <div className="main-screen">
       <div className="left"></div>
       <div className="header">
-        <img src={process.env.PUBLIC_URL + '/Assets/title.png'} width="430px" height="auto" alt="PoseNet 打砖块" />
+        <img
+          src={process.env.PUBLIC_URL + "/Assets/title.png"}
+          width="90%"
+          height="auto"
+          alt="PoseNet 打砖块"
+        />
       </div>
       <canvas id="myCanvas" width="480" height="320"></canvas>
       <div className="controls">
-      <div className="control-buttons">
-          <Button
+        <div className="control-buttons">
+          <button
+            style={{
+              backgroundColor:'lightgray',
+              backgroundImage: process.env.PUBLIC_URL + "/Assets/OKbutton.png",
+            }}
             onClick={() => {
               if (!paused) {
                 pause();
               } else {
                 if (backgroundAudio) {
-                  console.log(backgroundAudio)
+                  console.log(backgroundAudio);
                   backgroundAudio.autoplay = true;
                   backgroundAudio.play();
                 }
@@ -111,7 +119,7 @@ export const Posenet = ({ setPaused }: Props) => {
             }}
           >
             {paused ? `开始` : `暂停`}
-          </Button>
+          </button>
         </div>
         <div className="camera">
           <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
@@ -121,13 +129,13 @@ export const Posenet = ({ setPaused }: Props) => {
       </div>
       <div className="right"></div>
       <Modal
-        className="succeed"
+        className="title"
         visible={isSucceedModalVisible}
         onCancel={() => {
           setIsSucceedModalVisible(false);
         }}
         onOk={handleOk}
-        footer={<Button onClick={handleOk}>OK</Button>}
+        footer={<button onClick={handleOk}>OK</button>}
       >
         获胜
       </Modal>

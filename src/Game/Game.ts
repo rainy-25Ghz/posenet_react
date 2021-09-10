@@ -182,7 +182,7 @@ export function draw() {
   if (y + dy < ballRadius) {
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
-    if (x > paddleX && x < paddleX + paddleWidth) {
+    if (Math.abs((x + 10) - (paddleX + paddleWidth/2)) < (10 + paddleWidth)/2 && Math.abs((y + 10) - (canvas.height-paddleHeight + paddleHeight/2)) < (10 + paddleHeight)/2) {
       dy = -dy;
     } else {
       lives--;
