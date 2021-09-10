@@ -210,6 +210,7 @@ export function draw() {
 
   x += dx;
   y += dy;
+  
   updatePose().then((pose) => {
     if (pose.keypoints[0].score > 0.6)
       paddleX =
