@@ -208,7 +208,7 @@ export function draw() {
   x += dx;
   y += dy;
   
-  updatePose().then((pose) => {
+  updatePose&&updatePose().then((pose) => {
     if (pose.keypoints[0].score > 0.6)
       paddleX =
         (pose.keypoints[0].position.x / video.width) * canvas.width * 1.1;
@@ -285,8 +285,6 @@ backImage.src =  '/Assets/background.jpg';
             };
             init(show);
             drawInit();
-            // console.log('start draw!');
-            // requestAnimationFrame(draw);
           }
         },
         false
@@ -325,6 +323,8 @@ backImage.src =  '/Assets/background.jpg';
                   backgroundAudio.autoplay = true;
                   backgroundAudio.play();
                 }
+                canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+                ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
                 requestAnimationFrame(draw);
               }
               setpaused(!paused);
