@@ -1,4 +1,7 @@
-import { updatePose } from "../Posenet";
+import { load, Pose } from "@tensorflow-models/posenet";
+import { useEffect, useState } from "react";
+import "@tensorflow/tfjs-backend-webgl";
+import { Modal } from "antd";
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let ballRadius: number;
@@ -39,11 +42,12 @@ export const init = (callback: (succeed: boolean) => void) => {
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
   video = document.getElementById("video") as HTMLVideoElement;
   if (!backgroundAudio) {
-    backgroundAudio = new Audio(process.env.PUBLIC_URL + '/Assets/BGM.mp3');
+    backgroundAudio = new Audio( '/Assets/BGM.mp3');
   }
   if (!hitAudio) {
-    hitAudio = new Audio(process.env.PUBLIC_URL + '/Assets/hit.wav');
+    hitAudio = new Audio('/Assets/hit.wav');
   }
+
   ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   ballRadius = 10;
   x = canvas.width / 2;
@@ -95,8 +99,6 @@ function collisionDetection() {
           score++;
           if (score === brickRowCount * brickColumnCount) {
             modal(true);
-            // alert("YOU WIN, CONGRATS!");
-            // document.location.reload();
           }
         }
       }
@@ -106,10 +108,7 @@ function collisionDetection() {
 
 function drawBall() {
   ctx.beginPath();
-  // ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  // ctx.fillStyle = "#0095DD";
-  // ctx.fill();
-  ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/ball.png'), x-ballRadius, y-ballRadius);
+  ctx.drawImage(imageFromPath( '/Assets/ball.png'), x-ballRadius, y-ballRadius);
   ctx.closePath();
   
 }
@@ -119,7 +118,7 @@ function drawPaddle() {
   console.log(paddleWidth + ' ' + paddleHeight)
   ctx.fillStyle = "#0095DD";
   ctx.fill();*/
-  ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/paddle.png'), paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  ctx.drawImage(imageFromPath( '/Assets/paddle.png'), paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
   ctx.closePath();
 }
 function drawBricks() {
@@ -133,12 +132,12 @@ function drawBricks() {
         /*ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
         var img = new Image();
-        img.src = process.env.PUBLIC_URL + '/Assets/brick1.png';
+        img.src =  + '/Assets/brick1.png';
         img.onload = function () {
           var ptrn = ctx.createPattern(img, 'repeat') as CanvasPattern;
         }
         ctx.closePath();*/
-        ctx.drawImage(imageFromPath(process.env.PUBLIC_URL + '/Assets/brick1.png'), brickX, brickY, brickWidth, brickHeight);
+        ctx.drawImage(imageFromPath('/Assets/brick1.png'), brickX, brickY, brickWidth, brickHeight);
       }
     }
   }
@@ -153,9 +152,10 @@ function drawLives() {
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
-let backImage = new Image();
-backImage.src = process.env.PUBLIC_URL + '/Assets/background.jpg';
+let backImage ;
+
 export function drawInit() {
+  
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(backImage, 0, 0);
   drawBricks();
@@ -173,7 +173,6 @@ export function draw() {
   drawScore();
   drawLives();
   collisionDetection();
-
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
   }
@@ -216,3 +215,153 @@ export function draw() {
   });
   id = requestAnimationFrame(draw);
 }
+
+let pose: Pose | undefined = undefined;
+export let updatePose: () => Promise<Pose>;
+export const Posenet = () => {
+  const [paused, setpaused] = useState(true);
+  const [isSucceedModalVisible, setIsSucceedModalVisible] = useState(false);
+  const [isFailModalVisible, setFailModalVisible] = useState(false);
+  const show = (succeed: boolean) => {
+    if (succeed) {
+      setIsSucceedModalVisible(true);
+      return;
+    } else {
+      setFailModalVisible(true);
+    }
+  };
+
+  const handleOk = () => {
+    init(show);
+    pause();
+    setpaused(true);
+    setIsSucceedModalVisible(false);
+    setFailModalVisible(false);
+  };
+  useEffect(() => {
+    backImage= new Image();
+backImage.src =  '/Assets/background.jpg';
+    // The width and height of the captured photo. We will set the
+    // width to the value defined here, but the height will be
+    // calculated based on the aspect ratio of the input stream.
+
+    // |streaming| indicates whether or not we're currently streaming
+    // video from the camera. Obviously, we start at false.
+
+    let streaming = false;
+
+    // The various HTML elements we need to configure or control. These
+    // will be set by the startup() function.
+
+    async function startup_posenet() {
+      console.log("start");
+      let net = await load();
+
+      let video = document.getElementById("video") as HTMLVideoElement;
+      video.setAttribute("playsinline", "true");
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "user" }, audio: false })
+        .then(function (stream) {
+          video.srcObject = stream;
+          video.play();
+        })
+        .catch(function (err) {
+          console.log("An error occurred: " + err);
+          alert("not supported");
+        });
+
+      video.addEventListener(
+        "canplay",
+        function (ev) {
+          if (!streaming) {
+            console.log("canplay");
+            streaming = true;
+            updatePose = async () => {
+              pose = await net.estimateSinglePose(video, {
+                flipHorizontal: true,
+              });
+              console.log(pose);
+              return pose;
+            };
+            init(show);
+            drawInit();
+            // console.log('start draw!');
+            // requestAnimationFrame(draw);
+          }
+        },
+        false
+      );
+    }
+    window.addEventListener("load", startup_posenet, false);
+  }, []);
+
+ 
+
+  return (
+    <div className="main-screen">
+      <div className="left"></div>
+      <div className="header">
+        <img
+          src= "/Assets/title.png"
+          width="90%"
+          height="auto"
+          alt="PoseNet 打砖块"
+        />
+      </div>
+      <canvas id="myCanvas" width="480" height="320"></canvas>
+      <div className="controls">
+        <div className="control-buttons">
+          <button
+            style={{
+              backgroundColor:'lightgray',
+              backgroundImage: "/Assets/OKbutton.png",
+            }}
+            onClick={() => {
+              if (!paused) {
+                pause();
+              } else {
+                if (backgroundAudio) {
+                  console.log(backgroundAudio);
+                  backgroundAudio.autoplay = true;
+                  backgroundAudio.play();
+                }
+                requestAnimationFrame(draw);
+              }
+              setpaused(!paused);
+            }}
+          >
+            {paused ? `开始` : `暂停`}
+          </button>
+        </div>
+        <div className="camera">
+          <video id="video" width="240" style={{ transform: "scaleX(-1)" }}>
+            视频流不可用。
+          </video>
+        </div>
+      </div>
+      <div className="right"></div>
+      <Modal
+        className="title"
+        visible={isSucceedModalVisible}
+        onCancel={() => {
+          setIsSucceedModalVisible(false);
+        }}
+        onOk={handleOk}
+        footer={<button onClick={handleOk}>OK</button>}
+      >
+        获胜
+      </Modal>
+      <Modal
+        className="failed"
+        visible={isFailModalVisible}
+        onCancel={() => {
+          setFailModalVisible(false);
+        }}
+        onOk={handleOk}
+        footer={<button onClick={handleOk}>OK</button>}
+      >
+        失败
+      </Modal>
+    </div>
+  );
+};
