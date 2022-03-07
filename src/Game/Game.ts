@@ -1,4 +1,3 @@
-import { Pose } from "@tensorflow-models/posenet";
 import { updatePose } from "../Posenet";
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
@@ -24,7 +23,6 @@ let lives: number;
 let bricks: any[];
 let video: HTMLVideoElement;
 let id: number;
-let interval = 33;
 let modal: (succeed: boolean) => void;
 export let hitAudio: HTMLAudioElement | null;
 export let backgroundAudio: HTMLAudioElement | null;
@@ -84,7 +82,7 @@ function collisionDetection() {
   for (var c = 0; c < brickColumnCount; c++) {
     for (var r = 0; r < brickRowCount; r++) {
       var b = bricks[c][r];
-      if (b.status == 1) {
+      if (b.status === 1) {
         if (
           x > b.x &&
           x < b.x + brickWidth &&
@@ -95,7 +93,7 @@ function collisionDetection() {
           b.status = 0;
           hitAudio?.play();
           score++;
-          if (score == brickRowCount * brickColumnCount) {
+          if (score === brickRowCount * brickColumnCount) {
             modal(true);
             // alert("YOU WIN, CONGRATS!");
             // document.location.reload();
@@ -127,7 +125,7 @@ function drawPaddle() {
 function drawBricks() {
   for (var c = 0; c < brickColumnCount; c++) {
     for (var r = 0; r < brickRowCount; r++) {
-      if (bricks[c][r].status == 1) {
+      if (bricks[c][r].status === 1) {
         var brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
         var brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
         bricks[c][r].x = brickX;
