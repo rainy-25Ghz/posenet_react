@@ -24,7 +24,7 @@ let brickOffsetTop: number;
 let score: number;
 let lives: number;
 let bricks: any[];
-let video: HTMLVideoElement;
+let video_: HTMLVideoElement;
 let id: number;
 let modal: (succeed: boolean) => void;
 export let hitAudio: HTMLAudioElement | null;
@@ -40,7 +40,7 @@ export const pause = () => {
 export const init = (callback: (succeed: boolean) => void) => {
   modal = callback;
   canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
-  video = document.getElementById("video") as HTMLVideoElement;
+  video_ = document.getElementById("video") as HTMLVideoElement;
   if (!backgroundAudio) {
     backgroundAudio = new Audio("/Assets/BGM.mp3");
   }
@@ -230,7 +230,7 @@ export function draw() {
     updatePose().then((pose) => {
       if (pose.keypoints[0].score > 0.6)
         paddleX =
-          (pose.keypoints[0].position.x / video.width) * canvas.width * 1.1;
+          (pose.keypoints[0].position.x / video_.width) * canvas.width * 1.1;
     });
   id = requestAnimationFrame(draw);
 }
@@ -304,12 +304,13 @@ export const Posenet = () => {
 
   useEffect(() => {
     if (canPlay && loadingPosenet) {
+      video_=video.current;
       init(show);
       drawInit();
     }
 
     // window.addEventListener("load", startup_posenet, false);
-  }, []);
+  }, [canPlay,loadingPosenet]);
 
   return (
     <div className="main-screen">
