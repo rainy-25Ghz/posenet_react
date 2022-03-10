@@ -1,7 +1,7 @@
 import { load, Pose, PoseNet } from "@tensorflow-models/posenet";
 import { useEffect, useRef, useState } from "react";
 import "@tensorflow/tfjs-backend-webgl";
-import { Modal } from "antd";
+import { Modal, Spin,message } from "antd";
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let ballRadius: number;
@@ -289,7 +289,7 @@ export const Posenet = () => {
         video.current.play();
       })();
       video.current.addEventListener("canplay", () => {
-        console.log("canplay");
+
         updatePose = async () => {
           pose = await net.current.estimateSinglePose(video.current, {
             flipHorizontal: true,
@@ -298,6 +298,7 @@ export const Posenet = () => {
           return pose;
         };
         setCanPlay(true);
+        message.info("摄像头数据获取成功")
       });
     }
   }, [windowLoading]);
@@ -307,6 +308,8 @@ export const Posenet = () => {
       video_=video.current;
       init(show);
       drawInit();
+    }else{
+      message.loading("加载中")
     }
 
     // window.addEventListener("load", startup_posenet, false);
@@ -323,6 +326,7 @@ export const Posenet = () => {
           alt="PoseNet 打砖块"
         />
       </div>
+      {canPlay&&loadingPosenet&&windowLoading&&<Spin></Spin>}
       <canvas id="myCanvas" width="480" height="320"></canvas>
       <div className="controls">
         <div className="control-buttons">
