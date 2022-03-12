@@ -23,7 +23,7 @@
     <a href="https://github.com/rainy-25Ghz/posenet_react"><strong>探索本项目的文档 »</strong></a>
     <br />
     <br />
-    <a href="https://rainy-25Ghz.github.io/posenet_react/index.html">试玩Demo</a>
+    <a href="https://posenet-react.vercel.app">试玩Demo</a>
     ·
     <a href="https://github.com/rainy-25Ghz/posenet_react/issues">报告Bug</a>
     ·
